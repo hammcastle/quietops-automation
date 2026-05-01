@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QuietOps Automation — Intake</title>
+  <meta name="description" content="Tell QuietOps Automation what workflow you want fixed." />
+  <style>
+    :root{--bg:#07111F;--card:#101C31;--line:#263A5A;--text:#EFF6FF;--muted:#A9B7CC;--blue:#38BDF8;--green:#22C55E;--yellow:#FACC15}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 20% 0,#163762 0,#07111F 48%,#050b14 100%);color:var(--text);line-height:1.5}main{max-width:900px;margin:auto;padding:42px 22px 80px}.badge{display:inline-flex;padding:7px 12px;border:1px solid rgba(56,189,248,.38);border-radius:999px;background:rgba(56,189,248,.1);color:#bfdbfe;font-weight:900;font-size:14px}h1{font-size:clamp(2.2rem,5vw,4.2rem);line-height:1;margin:22px 0 12px;letter-spacing:-.05em}p{color:var(--muted);font-size:1.05rem}.card{border:1px solid var(--line);border-radius:28px;background:linear-gradient(145deg,rgba(16,28,49,.94),rgba(12,21,37,.76));box-shadow:0 24px 90px rgba(0,0,0,.28);padding:24px;margin-top:24px}label{display:block;font-weight:850;margin:18px 0 8px}input,textarea,select{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:#07111f;color:var(--text);font:inherit}textarea{min-height:105px}.hint{font-size:.9rem;color:var(--muted);margin-top:4px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.checks label{display:flex;gap:8px;align-items:center;margin:0;padding:10px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.035);font-weight:650}.checks input{width:auto}.btn{display:inline-block;margin-top:20px;padding:14px 20px;border-radius:999px;border:0;background:linear-gradient(90deg,var(--blue),var(--green));color:#03111d;font-weight:950;cursor:pointer}.secondary{background:transparent;color:var(--text);border:1px solid var(--line);margin-left:8px}.warning{padding:14px 16px;border-left:4px solid var(--yellow);background:rgba(250,204,21,.08);border-radius:14px}.output{white-space:pre-wrap;background:#050b14;border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:18px;color:#dbeafe;display:none}@media(max-width:720px){.grid,.checks{grid-template-columns:1fr}.secondary{margin-left:0}}
+  </style>
+</head>
+<body>
+<main>
+  <span class="badge">QuietOps Automation · intake</span>
+  <h1>Tell me the workflow you want fixed.</h1>
+  <p>You do not need to know the technical solution. Describe the repetitive task, where it starts, and what should happen next. If it fits the beta, the next step is a short scope confirmation. Payment happens only after scope is clear and approved.</p>
+  <p class="warning"><strong>Safety note:</strong> Do not include passwords, medical records, payment card data, SSNs, legal case data, tax/financial account data, or other sensitive regulated information.</p>
+
+  <form id="intake" class="card">
+    <input name="website_extra" style="display:none" tabindex="-1" autocomplete="off">
+    <div class="grid">
+      <div><label>Your name *</label><input name="name" required></div>
+      <div><label>Business name *</label><input name="business_name" required></div>
+      <div><label>Email *</label><input name="email" type="email" required></div>
+      <div><label>Phone</label><input name="phone"></div>
+    </div>
+    <label>Website or social profile</label><input name="website_or_profile">
+    <div class="grid">
+      <div><label>Business type *</label><select name="business_type" required><option value="">Choose…</option><option>Mobile detailing</option><option>Landscaping / yard care</option><option>Cleaning</option><option>Handyman / repair</option><option>Photography / events</option><option>Contractor / trades</option><option>Consulting / professional service</option><option>Other</option></select></div>
+      <div><label>Location / service area *</label><input name="service_area" required></div>
+    </div>
+    <label>What repetitive workflow do you want fixed? *</label><textarea name="workflow_requested" required placeholder="Example: when someone asks for a quote, I want them logged, replied to, and reminded if I do not follow up."></textarea>
+    <label>Where does this workflow start? *</label><div class="checks" data-name="start_sources"><label><input type="checkbox" value="Website form">Website form</label><label><input type="checkbox" value="Email">Email</label><label><input type="checkbox" value="Text/SMS">Text/SMS</label><label><input type="checkbox" value="Facebook/Instagram DM">Facebook/Instagram DM</label><label><input type="checkbox" value="Phone/voicemail">Phone/voicemail</label><label><input type="checkbox" value="Spreadsheet">Spreadsheet</label><label><input type="checkbox" value="CRM">CRM</label><label><input type="checkbox" value="Other">Other</label></div>
+    <label>What should happen automatically? *</label><div class="checks" data-name="desired_automations"><label><input type="checkbox" value="Owner/team alert">Owner/team alert</label><label><input type="checkbox" value="Customer confirmation reply">Customer confirmation reply</label><label><input type="checkbox" value="Add row to tracker/spreadsheet">Add row to tracker/spreadsheet</label><label><input type="checkbox" value="Follow-up reminder">Follow-up reminder</label><label><input type="checkbox" value="Review request">Review request</label><label><input type="checkbox" value="Calendar/task creation">Calendar/task creation</label><label><input type="checkbox" value="Weekly report">Weekly report</label><label><input type="checkbox" value="Other">Other</label></div>
+    <label>What tools are involved today?</label><textarea name="tools_today" placeholder="Gmail, Google Sheets, website form, Facebook, CRM, calendar, etc."></textarea>
+    <div class="grid">
+      <div><label>How often does this happen?</label><select name="frequency"><option></option><option>Daily</option><option>Weekly</option><option>A few times/month</option><option>Seasonal</option><option>Not sure</option></select></div>
+      <div><label>Desired timeline</label><input name="desired_timeline"></div>
+    </div>
+    <label>What goes wrong if this task is missed or delayed? *</label><textarea name="missed_task_impact" required></textarea>
+    <div class="grid">
+      <div><label>Will this send messages to customers? *</label><select name="sends_customer_messages" required><option value="">Choose…</option><option>Yes</option><option>No</option><option>Not sure</option></select></div>
+      <div><label>If yes, who approves wording?</label><input name="message_approver"></div>
+    </div>
+    <label>Does this involve sensitive/regulated data? *</label><select name="sensitive_data_flag" required><option value="">Choose…</option><option>No</option><option>Yes</option><option>Not sure</option></select>
+    <div class="hint">Medical, legal, tax/financial, payment-card, SSN/government ID, children’s data, etc.</div>
+    <label>If yes or not sure, briefly explain.</label><textarea name="sensitive_data_notes"></textarea>
+    <label>Can you provide limited-access invites or temporary access if needed? *</label><select name="limited_access_possible" required><option value="">Choose…</option><option>Yes</option><option>No</option><option>Not sure</option></select>
+    <label>Anything else I should know?</label><textarea name="other_notes"></textarea>
+    <button class="btn" type="submit">Prepare intake email</button><button class="btn secondary" type="button" id="copyBtn">Copy intake summary</button>
+    <div id="output" class="output"></div>
+  </form>
+</main>
+<script>
+function collect(){const f=document.getElementById('intake');const fd=new FormData(f);const obj=Object.fromEntries(fd.entries());for(const group of document.querySelectorAll('.checks')){obj[group.dataset.name]=Array.from(group.querySelectorAll('input:checked')).map(i=>i.value).join('; ')}return obj}
+function summary(obj){return `QuietOps Automation Intake\n\nName: ${obj.name||''}\nBusiness: ${obj.business_name||''}\nEmail: ${obj.email||''}\nPhone: ${obj.phone||''}\nWebsite/social: ${obj.website_or_profile||''}\nBusiness type: ${obj.business_type||''}\nService area: ${obj.service_area||''}\n\nWorkflow requested:\n${obj.workflow_requested||''}\n\nStarts from: ${obj.start_sources||''}\nDesired automations: ${obj.desired_automations||''}\nTools today: ${obj.tools_today||''}\nFrequency: ${obj.frequency||''}\nMissed/delayed impact:\n${obj.missed_task_impact||''}\n\nSends customer messages: ${obj.sends_customer_messages||''}\nMessage approver: ${obj.message_approver||''}\nSensitive data flag: ${obj.sensitive_data_flag||''}\nSensitive data notes: ${obj.sensitive_data_notes||''}\nLimited access possible: ${obj.limited_access_possible||''}\nDesired timeline: ${obj.desired_timeline||''}\nOther notes:\n${obj.other_notes||''}`}
+document.getElementById('intake').addEventListener('submit',e=>{e.preventDefault();const obj=collect();const text=summary(obj);const out=document.getElementById('output');out.style.display='block';out.textContent='Thanks — your intake summary is ready. Your email app should open so you can send it. If it does not, copy the summary below and send it manually.\n\n'+text;location.href=`mailto:primebrainiac@gmail.com?subject=${encodeURIComponent('AUTOMATE - QuietOps Intake - '+(obj.business_name||''))}&body=${encodeURIComponent(text)}`;})
+document.getElementById('copyBtn').addEventListener('click',async()=>{const text=summary(collect());const out=document.getElementById('output');out.style.display='block';out.textContent=text;try{await navigator.clipboard.writeText(text); alert('Intake summary copied.')}catch(e){alert('Copy failed; select the summary manually.')}})
+</script>
+</body>
+</html>
