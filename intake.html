@@ -11,9 +11,9 @@
 </head>
 <body>
 <main>
-  <span class="badge">QuietOps Automation · intake</span>
+  <span class="badge">QuietOps Automation · workflow intake</span>
   <h1>Tell me the workflow you want fixed.</h1>
-  <p>You do not need to know the technical solution. Describe the repetitive task, where it starts, and what should happen next. If it fits the beta, the next step is a short scope confirmation. Payment happens only after scope is clear and approved.</p>
+  <p>You do not need to know the technical solution. Describe the repetitive task, where it starts, and what should happen next. If it looks like a fit, the next step is a short scope confirmation. Payment happens only after scope is clear and approved.</p>
   <p class="warning"><strong>Safety note:</strong> Do not include passwords, medical records, payment card data, SSNs, legal case data, tax/financial account data, or other sensitive regulated information.</p>
 
   <form id="intake" class="card">
@@ -47,14 +47,15 @@
     <label>If yes or not sure, briefly explain.</label><textarea name="sensitive_data_notes"></textarea>
     <label>Can you provide limited-access invites or temporary access if needed? *</label><select name="limited_access_possible" required><option value="">Choose…</option><option>Yes</option><option>No</option><option>Not sure</option></select>
     <label>Anything else I should know?</label><textarea name="other_notes"></textarea>
-    <button class="btn" type="submit">Prepare intake email</button><button class="btn secondary" type="button" id="copyBtn">Copy intake summary</button>
+    <button class="btn" type="submit">Send intake request</button><button class="btn secondary" type="button" id="copyBtn">Copy intake summary</button>
     <div id="output" class="output"></div>
   </form>
 </main>
 <script>
 function collect(){const f=document.getElementById('intake');const fd=new FormData(f);const obj=Object.fromEntries(fd.entries());for(const group of document.querySelectorAll('.checks')){obj[group.dataset.name]=Array.from(group.querySelectorAll('input:checked')).map(i=>i.value).join('; ')}return obj}
 function summary(obj){return `QuietOps Automation Intake\n\nName: ${obj.name||''}\nBusiness: ${obj.business_name||''}\nEmail: ${obj.email||''}\nPhone: ${obj.phone||''}\nWebsite/social: ${obj.website_or_profile||''}\nBusiness type: ${obj.business_type||''}\nService area: ${obj.service_area||''}\n\nWorkflow requested:\n${obj.workflow_requested||''}\n\nStarts from: ${obj.start_sources||''}\nDesired automations: ${obj.desired_automations||''}\nTools today: ${obj.tools_today||''}\nFrequency: ${obj.frequency||''}\nMissed/delayed impact:\n${obj.missed_task_impact||''}\n\nSends customer messages: ${obj.sends_customer_messages||''}\nMessage approver: ${obj.message_approver||''}\nSensitive data flag: ${obj.sensitive_data_flag||''}\nSensitive data notes: ${obj.sensitive_data_notes||''}\nLimited access possible: ${obj.limited_access_possible||''}\nDesired timeline: ${obj.desired_timeline||''}\nOther notes:\n${obj.other_notes||''}`}
-document.getElementById('intake').addEventListener('submit',e=>{e.preventDefault();const obj=collect();const text=summary(obj);const out=document.getElementById('output');out.style.display='block';out.textContent='Thanks — your intake summary is ready. Your email app should open so you can send it. If it does not, copy the summary below and send it manually.\n\n'+text;location.href=`mailto:primebrainiac@gmail.com?subject=${encodeURIComponent('AUTOMATE - QuietOps Intake - '+(obj.business_name||''))}&body=${encodeURIComponent(text)}`;})
+const API_ENDPOINT='https://script.google.com/macros/s/AKfycbwRRfnAs8hMjotZDPmrZ3Jorxa6yis9M-ROpd8f4sbEY8oCbQ9ghb2Keh10UNVUPd8jeA/exec';
+document.getElementById('intake').addEventListener('submit',async e=>{e.preventDefault();const obj=collect();obj.website_extra=document.querySelector('input[name="website_extra"]')?.value||'';const text=summary(obj);const out=document.getElementById('output');out.style.display='block';if(!API_ENDPOINT){out.textContent='Your intake summary is ready. An email window should open so you can send it. If it does not, copy the summary below and email it to primebrainiac@gmail.com.\n\n'+text;location.href=`mailto:primebrainiac@gmail.com?subject=${encodeURIComponent('AUTOMATE - QuietOps Intake - '+(obj.business_name||''))}&body=${encodeURIComponent(text)}`;return;}out.textContent='Submitting intake...';try{await fetch(API_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(obj)});out.textContent='Thanks — your intake was submitted. I’ll review fit and follow up before any payment or build work.\n\n'+text;}catch(err){out.textContent='Your intake summary is ready, but the automatic submit did not complete. Copy the summary below and email it to primebrainiac@gmail.com.\n\nDetails: '+(err?.message||err)+'\n\n'+text;location.href=`mailto:primebrainiac@gmail.com?subject=${encodeURIComponent('AUTOMATE - QuietOps Intake - '+(obj.business_name||''))}&body=${encodeURIComponent(text)}`;}})
 document.getElementById('copyBtn').addEventListener('click',async()=>{const text=summary(collect());const out=document.getElementById('output');out.style.display='block';out.textContent=text;try{await navigator.clipboard.writeText(text); alert('Intake summary copied.')}catch(e){alert('Copy failed; select the summary manually.')}})
 </script>
 </body>
